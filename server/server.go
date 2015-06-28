@@ -24,6 +24,8 @@ func (wh *WordsHandler) ServeHTTP(w http.ResponseWriter,r *http.Request) {
 		return	
 	}
 	
+ 	w.Header().Set("Content-Type", "application/json")	
+	
 	letters := lettersArr[0]
 
 	result := make([]string, 0)
