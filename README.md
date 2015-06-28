@@ -19,8 +19,9 @@ docker build -t findwords .
 docker run -p 8080:8080 findwords
 ```
 then just set your broswer to http://localhost:8080/
-## With different words file
+## With a different words file
 use the FINDWORDS_SOURCE environment variable to configure a different source for words.
 ``` bash
 docker run -e "FINDWORDS_SOURCE=http://..." -p 8080:8080 findwords
 ```
+The file format is a list of words, one word per line.
