@@ -2,6 +2,7 @@ package wordmap
 
 import (
 	"sort"
+	"strings"
 	"github.com/uvgroovy/findwords/powerset"
 )
 
@@ -33,7 +34,7 @@ func wordToKey(word string) string {
 	}
 	sort.Sort(wordLetters)
 
-	return string(wordLetters)
+	return strings.ToLower(string(wordLetters))
 }
 
 
@@ -45,17 +46,36 @@ func (words *WordsMap) AddWord(word string) {
 
 
 
+// sort by length, longest first
+type LenStringSlice []string;
+func (p LenStringSlice) Len() int {
+	return len(p)
+}
+
+func (p LenStringSlice) Less(i, j int) bool {
+	return len(p[i]) > len(p[j])
+}
+
+func (p LenStringSlice) Swap(i, j int) {
+	p[i], p[j] = p[j], p[i]
+}
+
 func removeDups(sets [][]interface{}) []string {
 	// map to bool = poor man's set
 	set := make(map[string]bool)
 	for _, word := range sets {
 		set[wordToKey(toString(word))] = true
 	}
+	
 	// get the keys
 	words := make([]string, 0, len(set))
     for k := range set {
         words = append(words, k)
     }
+
+	// sort from big to small	
+	sort.Sort(LenStringSlice(words))
+	
 	return words
 }
 
