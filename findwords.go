@@ -48,7 +48,6 @@ func getWords(source string) io.ReadCloser {
 	
 }
 
-
 func Serve(words wordmap.WordsMap) {
 	
 	wh := &server.WordsHandler{words}
@@ -56,6 +55,7 @@ func Serve(words wordmap.WordsMap) {
 	mux := http.NewServeMux()
 	
 	mux.Handle("/words", wh)
+	mux.Handle("/",  http.FileServer(http.Dir("./html")))
 	
 	log.Fatal(http.ListenAndServe(":8080", mux))
 
@@ -84,7 +84,12 @@ func commandLine(words wordmap.WordsMap) {
 	for {
 		fmt.Print("Enter letters: ")
 		var letters string
-		fmt.Scanln(&letters)
+		if _, err := fmt.Scanln(&letters); err != nil {
+			if err != io.EOF {
+				log.Fatalln(err)	
+			}
+			return
+		}
 
 		if letters == "q" {
 			return
