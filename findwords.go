@@ -28,6 +28,8 @@ func getWords(source string) io.ReadCloser {
 		source = DEFAULT_SOURCE
 	}
 	
+	log.Println("Loading source", source)
+	
 	if (strings.HasPrefix(source, "http")) {
 		resp, err := http.Get(source)
 		if err != nil {
