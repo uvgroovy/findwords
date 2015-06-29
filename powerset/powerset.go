@@ -1,5 +1,7 @@
 package powerset
 
+import "math/big"
+
 func addToAll(elem interface{}, arr [][]interface{}) [][]interface{} {
 
 	newarr := make([][]interface{}, len(arr))
@@ -35,4 +37,35 @@ func CreatePowerSet(set []interface{}) [][]interface{} {
 	// return all sub sets
 	return append(subSetsWithHead, tailSubSets...)
 
+}
+
+
+func StreamPowerSet(set []interface{}) <- chan []interface{} {
+	state := big.NewInt(1)
+	one := big.NewInt(1)
+	two := big.NewInt(2)
+	for i := 0 ; i < len(set); i++ {
+		state.Mul(state, two)
+	}
+	state.Sub(state, one)
+	
+	c := make(chan []interface{})
+	go func() {	
+		for state.Sign() > 0 {
+			currentSubSet := make([]interface{}, 0)
+			bitLen := state.BitLen()
+			for i := 0; i < bitLen; i++ {
+				if state.Bit(i) != 0 {
+					currentSubSet = append(currentSubSet, set[i])
+				}
+			}
+			c <- currentSubSet
+			state.Sub(state, one)
+		}
+		// finally add the empty set:
+		c <- []interface{}{}
+		close(c)
+	}()
+	
+	return c
 }

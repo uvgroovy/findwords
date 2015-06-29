@@ -26,3 +26,22 @@ func TestPowerSetSize(t *testing.T) {
 	}
 	
 }
+
+func TestStreamPowerSetSize(t *testing.T) {
+	
+	in := make([]interface{}, 0)
+	for i :=0; i < 20; i++ {
+		want := pow2(i)
+		
+		got := 0
+		for range StreamPowerSet(in) {
+			got++
+		}
+		if got != want {
+			
+			t.Errorf("len(CreatePowerSet(%q)) == %q, want %q", in, got, want)
+		}
+		in = append(in, 1)
+	}
+	
+}
