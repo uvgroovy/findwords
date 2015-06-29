@@ -39,7 +39,7 @@ func TestStreamPowerSetSize(t *testing.T) {
 		}
 		if got != want {
 			
-			t.Errorf("len(CreatePowerSet(%q)) == %q, want %q", in, got, want)
+			t.Errorf("len(StreamPowerSet(%q)) == %q, want %q", in, got, want)
 		}
 		in = append(in, 1)
 	}
