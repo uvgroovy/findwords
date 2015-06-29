@@ -30,7 +30,7 @@ func TestPowerSetSize(t *testing.T) {
 func TestStreamPowerSetSize(t *testing.T) {
 	
 	in := make([]interface{}, 0)
-	for i :=0; i < 20; i++ {
+	for i :=0; i < 10; i++ {
 		want := pow2(i)
 		
 		got := 0

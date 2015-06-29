@@ -47,11 +47,11 @@ func StreamPowerSet(set []interface{}) <- chan []interface{} {
 	for i := 0 ; i < len(set); i++ {
 		state.Mul(state, two)
 	}
-	state.Sub(state, one)
 	
 	c := make(chan []interface{})
 	go func() {	
 		for state.Sign() > 0 {
+			state.Sub(state, one)
 			currentSubSet := make([]interface{}, 0)
 			bitLen := state.BitLen()
 			for i := 0; i < bitLen; i++ {
@@ -60,10 +60,7 @@ func StreamPowerSet(set []interface{}) <- chan []interface{} {
 				}
 			}
 			c <- currentSubSet
-			state.Sub(state, one)
 		}
-		// finally add the empty set:
-		c <- []interface{}{}
 		close(c)
 	}()
 	
